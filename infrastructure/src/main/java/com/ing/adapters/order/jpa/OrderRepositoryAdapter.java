@@ -1,9 +1,9 @@
-package com.ing.persistence.adapter;
+package com.ing.adapters.order.jpa;
 
+import com.ing.adapters.order.jpa.entity.OrderEntity;
+import com.ing.adapters.order.jpa.repository.OrderJpaRepository;
 import com.ing.order.model.Order;
 import com.ing.order.port.OrderPort;
-import com.ing.persistence.entity.OrderEntity;
-import com.ing.persistence.repository.OrderJpaRepository;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

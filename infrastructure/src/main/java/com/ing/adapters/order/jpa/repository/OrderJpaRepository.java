@@ -1,6 +1,6 @@
-package com.ing.persistence.repository;
+package com.ing.adapters.order.jpa.repository;
 
-import com.ing.persistence.entity.OrderEntity;
+import com.ing.adapters.order.jpa.entity.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

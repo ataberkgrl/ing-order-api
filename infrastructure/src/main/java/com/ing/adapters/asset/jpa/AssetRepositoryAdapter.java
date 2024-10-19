@@ -1,9 +1,9 @@
-package com.ing.persistence.adapter;
+package com.ing.adapters.asset.jpa;
 
+import com.ing.adapters.asset.jpa.entity.AssetEntity;
+import com.ing.adapters.asset.jpa.repository.AssetJpaRepository;
 import com.ing.asset.model.Asset;
 import com.ing.asset.port.AssetPort;
-import com.ing.persistence.entity.AssetEntity;
-import com.ing.persistence.repository.AssetJpaRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

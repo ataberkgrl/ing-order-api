@@ -1,4 +1,4 @@
-package com.ing.persistence.entity;
+package com.ing.adapters.asset.jpa.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

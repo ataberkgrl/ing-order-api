@@ -1,4 +1,4 @@
-package com.ing.order.command;
+package com.ing.asset.command;
 
 import lombok.Builder;
 import lombok.Value;

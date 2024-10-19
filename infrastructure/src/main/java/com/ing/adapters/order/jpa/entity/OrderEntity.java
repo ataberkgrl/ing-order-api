@@ -1,4 +1,4 @@
-package com.ing.persistence.entity;
+package com.ing.adapters.order.jpa.entity;
 
 import com.ing.order.model.Order;
 import jakarta.persistence.*;

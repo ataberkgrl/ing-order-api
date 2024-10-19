@@ -1,6 +1,6 @@
-package com.ing.persistence.repository;
+package com.ing.adapters.asset.jpa.repository;
 
-import com.ing.persistence.entity.AssetEntity;
+import com.ing.adapters.asset.jpa.entity.AssetEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
