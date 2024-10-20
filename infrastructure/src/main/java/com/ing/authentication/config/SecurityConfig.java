@@ -1,5 +1,6 @@
 package com.ing.authentication.config;
 
+import com.ing.authentication.filter.AdminAuthenticationFilter;
 import com.ing.authentication.filter.JwtAuthenticationFilter;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -25,10 +26,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableMethodSecurity
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AdminAuthenticationFilter adminAuthenticationFilter;
     private final UserDetailsService userDetailsService;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserDetailsService userDetailsService) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
+                          AdminAuthenticationFilter adminAuthenticationFilter,
+                          UserDetailsService userDetailsService) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.adminAuthenticationFilter = adminAuthenticationFilter;
         this.userDetailsService = userDetailsService;
     }
 
@@ -48,6 +53,7 @@ public class SecurityConfig {
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 )
                 .authenticationProvider(authenticationProvider())
+                .addFilterBefore(adminAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
