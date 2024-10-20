@@ -11,11 +11,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-public class AssetRepositoryAdapter implements AssetPort {
+public class AssetAdapter implements AssetPort {
 
     private final AssetJpaRepository assetJpaRepository;
 
-    public AssetRepositoryAdapter(AssetJpaRepository assetJpaRepository) {
+    public AssetAdapter(AssetJpaRepository assetJpaRepository) {
         this.assetJpaRepository = assetJpaRepository;
     }
 

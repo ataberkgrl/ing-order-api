@@ -12,11 +12,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-public class OrderRepositoryAdapter implements OrderPort {
+public class OrderAdapter implements OrderPort {
 
     private final OrderJpaRepository orderJpaRepository;
 
-    public OrderRepositoryAdapter(OrderJpaRepository orderJpaRepository) {
+    public OrderAdapter(OrderJpaRepository orderJpaRepository) {
         this.orderJpaRepository = orderJpaRepository;
     }
 

@@ -1,0 +1,12 @@
+jwt:
+  secret: "ing-bank-8f3fa72b8dfc9d2e1f5765a0d2c8b162fc9d2e1f5765a0d2c8b162f"
+  expiration: 3600000
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:ing
+    driver-class-name: org.h2.Driver
+    username: sa
+  h2:
+    console:
+      enabled: true
