@@ -2,7 +2,6 @@ package com.ing.adapters.asset.rest;
 
 import com.ing.adapters.asset.rest.dto.AssetResponse;
 import com.ing.adapters.asset.rest.dto.DepositMoneyRequest;
-import com.ing.adapters.asset.rest.dto.ListAssetsRequest;
 import com.ing.adapters.asset.rest.dto.WithdrawMoneyRequest;
 import com.ing.asset.command.ListAssetsCommand;
 import com.ing.asset.handler.DepositMoneyHandler;
@@ -28,25 +27,21 @@ public class AssetController {
     private final ListAssetsHandler listAssetsHandler;
 
     @PostMapping("/deposit")
-    @PreAuthorize("hasRole('ADMIN') or #request.customerId == authentication.name")
+    @PreAuthorize("hasRole('ADMIN') or #request.customerId == authentication.principal.id")
     public ResponseEntity<Void> depositMoney(@RequestBody DepositMoneyRequest request) {
-
         depositMoneyHandler.handle(request.toModel());
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/withdraw")
-    @PreAuthorize("hasRole('ADMIN') or #request.customerId == authentication.name")
+    @PreAuthorize("hasRole('ADMIN') or #request.customerId == authentication.principal.id")
     public ResponseEntity<Void> withdrawMoney(@RequestBody WithdrawMoneyRequest request) {
-
         withdrawMoneyHandler.handle(request.toModel());
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN') or #customerId == authentication.name")
+    @PreAuthorize("hasRole('ADMIN') or #customerId == authentication.principal.id")
     public ResponseEntity<List<AssetResponse>> listAssets(@RequestParam String customerId) {
         ListAssetsCommand command = new ListAssetsCommand(customerId);
         List<Asset> assets = listAssetsHandler.handle(command);

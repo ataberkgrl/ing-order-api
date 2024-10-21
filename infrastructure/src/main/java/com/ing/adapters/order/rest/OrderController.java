@@ -2,7 +2,6 @@ package com.ing.adapters.order.rest;
 
 import com.ing.adapters.order.rest.dto.CancelOrderRequest;
 import com.ing.adapters.order.rest.dto.CreateOrderRequest;
-import com.ing.adapters.order.rest.dto.ListOrdersRequest;
 import com.ing.adapters.order.rest.dto.OrderResponse;
 import com.ing.order.command.ListOrdersCommand;
 import com.ing.order.handler.CancelOrderHandler;
@@ -30,14 +29,14 @@ public class OrderController {
     private final CancelOrderHandler cancelOrderHandler;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN') or #request.customerId == authentication.name")
+    @PreAuthorize("hasRole('ADMIN') or #request.customerId == authentication.principal.id")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody CreateOrderRequest request) {
         Order order = createOrderHandler.handle(request.toModel());
         return new ResponseEntity<>(OrderResponse.fromModel(order), HttpStatus.CREATED);
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN') or #customerId == authentication.name")
+    @PreAuthorize("hasRole('ADMIN') or #customerId == authentication.principal.id")
     public ResponseEntity<List<OrderResponse>> listOrders(
             @RequestParam String customerId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
@@ -54,12 +53,10 @@ public class OrderController {
     }
 
     @DeleteMapping("/{orderId}")
-    @PreAuthorize("hasRole('ADMIN') or #customerId == authentication.name")
+    @PreAuthorize("hasRole('ADMIN') or #customerId == authentication.principal.id")
     public ResponseEntity<Void> cancelOrder(@PathVariable String orderId, @RequestParam String customerId) {
         CancelOrderRequest request = new CancelOrderRequest(orderId, customerId);
-
         cancelOrderHandler.handle(request.toModel());
-
         return ResponseEntity.noContent().build();
     }
 }
