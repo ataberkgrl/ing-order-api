@@ -45,7 +45,7 @@ public class CancelOrderHandler {
         orderRepository.save(order);
 
         // Return the reserved amount to the customer's asset
-        asset.incrementSize(
+        asset.incrementUsableSize(
                 order.getSide() == Order.OrderSide.SELL ? order.getSize() : order.getSize().multiply(order.getPrice())
         );
 

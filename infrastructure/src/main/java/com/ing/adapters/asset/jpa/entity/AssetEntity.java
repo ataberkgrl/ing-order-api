@@ -8,14 +8,13 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "assets")
 @Data
+@IdClass(AssetId.class)
 public class AssetEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(nullable = false)
     private String customerId;
 
+    @Id
     @Column(nullable = false)
     private String assetName;
 

@@ -22,22 +22,33 @@ public class OrderAdapter implements OrderPort {
 
     @Override
     public Order save(Order order) {
-        OrderEntity orderEntity = toEntity(order);
+        OrderEntity orderEntity;
+
+        if (order.getId() != null) {
+            orderEntity = orderJpaRepository.findById(Long.valueOf(order.getId()))
+                    .orElseGet(() -> toEntity(order));
+
+            updateEntity(orderEntity, order);
+        } else {
+            orderEntity = toEntity(order);
+        }
+
         OrderEntity savedEntity = orderJpaRepository.save(orderEntity);
+
         return toModel(savedEntity);
     }
 
     @Override
     public Optional<Order> findById(String id) {
         return orderJpaRepository.findById(Long.valueOf(id))
-            .map(this::toModel);
+                .map(this::toModel);
     }
 
     @Override
     public List<Order> findByCustomerIdAndDateRange(String customerId, LocalDateTime startDate, LocalDateTime endDate) {
         return orderJpaRepository.findByCustomerIdAndCreateDateBetween(customerId, startDate, endDate).stream()
-            .map(this::toModel)
-            .collect(Collectors.toList());
+                .map(this::toModel)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -47,6 +58,17 @@ public class OrderAdapter implements OrderPort {
 
     private OrderEntity toEntity(Order order) {
         OrderEntity entity = new OrderEntity();
+        updateEntity(entity, order);
+
+        return entity;
+    }
+
+    private void updateEntity(OrderEntity entity, Order order) {
+
+        if (order.getId() != null) {
+            entity.setId(Long.valueOf(order.getId()));
+        }
+
         entity.setCustomerId(order.getCustomerId());
         entity.setAssetName(order.getAssetName());
         entity.setSide(order.getSide());
@@ -54,19 +76,21 @@ public class OrderAdapter implements OrderPort {
         entity.setPrice(order.getPrice());
         entity.setStatus(order.getStatus());
         entity.setCreateDate(order.getCreateDate());
-        return entity;
     }
 
     private Order toModel(OrderEntity entity) {
+
         Order order = new Order(
-            entity.getCustomerId(),
-            entity.getAssetName(),
-            entity.getSide(),
-            entity.getSize(),
-            entity.getPrice()
+                entity.getCustomerId(),
+                entity.getAssetName(),
+                entity.getSide(),
+                entity.getSize(),
+                entity.getPrice()
         );
+
         order.setId(entity.getId().toString());
         order.setStatus(entity.getStatus());
+
         return order;
     }
 }

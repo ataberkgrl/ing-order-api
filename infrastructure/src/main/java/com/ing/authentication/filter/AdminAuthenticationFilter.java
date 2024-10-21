@@ -38,7 +38,10 @@ public class AdminAuthenticationFilter extends OncePerRequestFilter {
 
             if (values.length == 2 && values[0].equals(adminUsername) && values[1].equals(adminPassword)) {
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                        values[0], null, Collections.singletonList(new SimpleGrantedAuthority(User.UserType.ADMIN.toString())));
+                        values[0],
+                        null,
+                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + User.UserType.ADMIN))
+                );
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }

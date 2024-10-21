@@ -22,12 +22,24 @@ public class Asset {
         this.usableSize = this.usableSize.add(amount);
     }
 
+    public void incrementUsableSize(BigDecimal amount) {
+        this.usableSize = this.usableSize.add(amount);
+    }
+
     public void decrementSize(BigDecimal amount) {
         if (this.usableSize.compareTo(amount) < 0) {
             throw new IllegalArgumentException("Insufficient usable size");
         }
 
         this.size = this.size.subtract(amount);
+        this.usableSize = this.usableSize.subtract(amount);
+    }
+
+    public void decrementUsableSize(BigDecimal amount) {
+        if (this.usableSize.compareTo(amount) < 0) {
+            throw new IllegalArgumentException("Insufficient usable size");
+        }
+
         this.usableSize = this.usableSize.subtract(amount);
     }
 }

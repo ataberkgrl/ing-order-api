@@ -29,14 +29,14 @@ public class AssetAdapter implements AssetPort {
     @Override
     public Optional<Asset> findByCustomerIdAndAssetName(String customerId, String assetName) {
         return assetJpaRepository.findByCustomerIdAndAssetName(customerId, assetName)
-            .map(this::toModel);
+                .map(this::toModel);
     }
 
     @Override
     public List<Asset> findAllByCustomerId(String customerId) {
         return assetJpaRepository.findAllByCustomerId(customerId).stream()
-            .map(this::toModel)
-            .collect(Collectors.toList());
+                .map(this::toModel)
+                .collect(Collectors.toList());
     }
 
     private AssetEntity toEntity(Asset asset) {
@@ -50,10 +50,10 @@ public class AssetAdapter implements AssetPort {
 
     private Asset toModel(AssetEntity entity) {
         return new Asset(
-            entity.getCustomerId(),
-            entity.getAssetName(),
-            entity.getSize(),
-            entity.getUsableSize()
+                entity.getCustomerId(),
+                entity.getAssetName(),
+                entity.getSize(),
+                entity.getUsableSize()
         );
     }
 }

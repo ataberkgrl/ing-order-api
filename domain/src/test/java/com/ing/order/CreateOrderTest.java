@@ -67,7 +67,7 @@ class CreateOrderTest {
         verify(assetPort).save(argThat(asset ->
                 asset.getCustomerId().equals("customer1") &&
                         asset.getAssetName().equals("TRY") &&
-                        asset.getSize().compareTo(BigDecimal.valueOf(50000)) == 0 &&
+                        asset.getSize().compareTo(BigDecimal.valueOf(100000)) == 0 &&
                         asset.getUsableSize().compareTo(BigDecimal.valueOf(50000)) == 0
         ));
     }
@@ -102,7 +102,7 @@ class CreateOrderTest {
         verify(assetPort).save(argThat(asset ->
                 asset.getCustomerId().equals("customer1") &&
                         asset.getAssetName().equals("TUPRS") &&
-                        asset.getSize().compareTo(BigDecimal.ONE) == 0 &&
+                        asset.getSize().compareTo(BigDecimal.valueOf(2)) == 0 &&
                         asset.getUsableSize().compareTo(BigDecimal.ONE) == 0
         ));
     }

@@ -38,7 +38,7 @@ public class CreateOrderHandler {
             throw new IllegalArgumentException("Insufficient balance");
         }
 
-        asset.decrementSize(requiredAmount);
+        asset.decrementUsableSize(requiredAmount);
         assetRepository.save(asset);
 
         Order order = new Order(useCase.getCustomerId(),

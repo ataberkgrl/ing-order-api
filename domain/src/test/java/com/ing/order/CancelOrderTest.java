@@ -60,7 +60,7 @@ class CancelOrderTest {
         verify(assetPort).save(argThat(asset ->
                 asset.getCustomerId().equals(customerId) &&
                         asset.getAssetName().equals("TRY") &&
-                        asset.getSize().compareTo(BigDecimal.valueOf(100000)) == 0 &&
+                        asset.getSize().compareTo(BigDecimal.valueOf(50000)) == 0 &&
                         asset.getUsableSize().compareTo(BigDecimal.valueOf(50000)) == 0
         ));
     }
@@ -76,7 +76,7 @@ class CancelOrderTest {
         pendingOrder.setId(orderId);
         when(orderPort.findById(orderId)).thenReturn(Optional.of(pendingOrder));
 
-        Asset tuprsAsset = new Asset(customerId, "TUPRS", BigDecimal.ZERO, BigDecimal.ZERO);
+        Asset tuprsAsset = new Asset(customerId, "TUPRS", BigDecimal.ONE, BigDecimal.ZERO);
         when(assetPort.findByCustomerIdAndAssetName(customerId, "TUPRS")).thenReturn(Optional.of(tuprsAsset));
 
         // Act

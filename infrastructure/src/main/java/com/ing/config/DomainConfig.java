@@ -8,6 +8,7 @@ import com.ing.asset.handler.DepositMoneyHandler;
 import com.ing.order.handler.ListOrdersHandler;
 import com.ing.asset.handler.WithdrawMoneyHandler;
 import com.ing.order.port.OrderPort;
+import com.ing.user.port.UserPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,8 +31,8 @@ public class DomainConfig {
     }
 
     @Bean
-    public DepositMoneyHandler depositMoneyHandler(AssetPort assetPort) {
-        return new DepositMoneyHandler(assetPort);
+    public DepositMoneyHandler depositMoneyHandler(AssetPort assetPort, UserPort userPort) {
+        return new DepositMoneyHandler(assetPort, userPort);
     }
 
     @Bean

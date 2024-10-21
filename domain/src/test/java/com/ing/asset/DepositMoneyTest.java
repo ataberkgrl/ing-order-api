@@ -4,6 +4,8 @@ import com.ing.asset.command.DepositMoneyCommand;
 import com.ing.asset.handler.DepositMoneyHandler;
 import com.ing.asset.model.Asset;
 import com.ing.asset.port.AssetPort;
+import com.ing.user.model.User;
+import com.ing.user.port.UserPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,11 +24,14 @@ class DepositMoneyTest {
     @Mock
     private AssetPort assetPort;
 
+    @Mock
+    private UserPort userPort;
+
     private DepositMoneyHandler depositMoneyHandler;
 
     @BeforeEach
     void setUp() {
-        depositMoneyHandler = new DepositMoneyHandler(assetPort);
+        depositMoneyHandler = new DepositMoneyHandler(assetPort, userPort);
     }
 
     @Test
@@ -35,6 +40,13 @@ class DepositMoneyTest {
         String customerId = "customer1";
         BigDecimal amount = BigDecimal.valueOf(1000);
         DepositMoneyCommand command = new DepositMoneyCommand(customerId, amount);
+
+        when(userPort.findById(customerId)).thenReturn(Optional.of(new User(
+                customerId,
+                "username",
+                "password",
+                User.UserType.CUSTOMER))
+        );
 
         when(assetPort.findByCustomerIdAndAssetName(customerId, "TRY")).thenReturn(Optional.empty());
 
@@ -59,6 +71,14 @@ class DepositMoneyTest {
         DepositMoneyCommand command = new DepositMoneyCommand(customerId, depositAmount);
 
         Asset existingAsset = new Asset(customerId, "TRY", existingAmount, existingAmount);
+
+        when(userPort.findById(customerId)).thenReturn(Optional.of(new User(
+                customerId,
+                "username",
+                "password",
+                User.UserType.CUSTOMER))
+        );
+
         when(assetPort.findByCustomerIdAndAssetName(customerId, "TRY")).thenReturn(Optional.of(existingAsset));
 
         // Act
@@ -108,6 +128,13 @@ class DepositMoneyTest {
         BigDecimal largeAmount = BigDecimal.valueOf(1_000_000_000); // 1 billion
         DepositMoneyCommand command = new DepositMoneyCommand(customerId, largeAmount);
 
+        when(userPort.findById(customerId)).thenReturn(Optional.of(new User(
+                customerId,
+                "username",
+                "password",
+                User.UserType.CUSTOMER))
+        );
+
         when(assetPort.findByCustomerIdAndAssetName(customerId, "TRY")).thenReturn(Optional.empty());
 
         // Act
@@ -133,6 +160,13 @@ class DepositMoneyTest {
         Asset initialAsset = new Asset(customerId, "TRY", initialAmount, initialAmount);
         Asset afterFirstDeposit = new Asset(customerId, "TRY", initialAmount.add(firstDeposit), initialAmount.add(firstDeposit));
 
+        when(userPort.findById(customerId)).thenReturn(Optional.of(new User(
+                customerId,
+                "username",
+                "password",
+                User.UserType.CUSTOMER))
+        );
+        
         when(assetPort.findByCustomerIdAndAssetName(customerId, "TRY"))
                 .thenReturn(Optional.of(initialAsset))
                 .thenReturn(Optional.of(afterFirstDeposit));
