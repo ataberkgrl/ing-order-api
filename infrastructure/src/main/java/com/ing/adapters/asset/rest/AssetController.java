@@ -4,6 +4,7 @@ import com.ing.adapters.asset.rest.dto.AssetResponse;
 import com.ing.adapters.asset.rest.dto.DepositMoneyRequest;
 import com.ing.adapters.asset.rest.dto.ListAssetsRequest;
 import com.ing.adapters.asset.rest.dto.WithdrawMoneyRequest;
+import com.ing.asset.command.ListAssetsCommand;
 import com.ing.asset.handler.DepositMoneyHandler;
 import com.ing.asset.handler.ListAssetsHandler;
 import com.ing.asset.handler.WithdrawMoneyHandler;
@@ -42,13 +43,13 @@ public class AssetController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AssetResponse>> listAssets(@RequestBody ListAssetsRequest request) {
-
-        List<Asset> assets = listAssetsHandler.handle(request.toModel());
+    public ResponseEntity<List<AssetResponse>> listAssets(@RequestParam String customerId) {
+        ListAssetsCommand command = new ListAssetsCommand(customerId);
+        List<Asset> assets = listAssetsHandler.handle(command);
 
         List<AssetResponse> assetResponses = assets.stream()
-            .map(AssetResponse::fromModel)
-            .collect(Collectors.toList());
+                .map(AssetResponse::fromModel)
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok(assetResponses);
     }
