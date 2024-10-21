@@ -1,5 +1,5 @@
 jwt:
-  secret: "ing-bank-8f3fa72b8dfc9d2e1f5765a0d2c8b162fc9d2e1f5765a0d2c8b162f"
+  secret: ${JWT_SECRET}
   expiration: 3600000
 
 spring:
@@ -10,7 +10,9 @@ spring:
   h2:
     console:
       enabled: true
+      settings:
+        web-allow-others: true
 
 admin:
-  username: "admin"
-  password: "123"
+  username: ${ADMIN_USERNAME}
+  password: ${ADMIN_PASSWORD}
