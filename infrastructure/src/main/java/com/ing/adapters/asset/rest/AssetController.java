@@ -12,6 +12,7 @@ import com.ing.asset.model.Asset;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class AssetController {
     private final ListAssetsHandler listAssetsHandler;
 
     @PostMapping("/deposit")
+    @PreAuthorize("hasRole('ADMIN') or #request.customerId == authentication.name")
     public ResponseEntity<Void> depositMoney(@RequestBody DepositMoneyRequest request) {
 
         depositMoneyHandler.handle(request.toModel());
@@ -35,6 +37,7 @@ public class AssetController {
     }
 
     @PostMapping("/withdraw")
+    @PreAuthorize("hasRole('ADMIN') or #request.customerId == authentication.name")
     public ResponseEntity<Void> withdrawMoney(@RequestBody WithdrawMoneyRequest request) {
 
         withdrawMoneyHandler.handle(request.toModel());
@@ -43,6 +46,7 @@ public class AssetController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN') or #customerId == authentication.name")
     public ResponseEntity<List<AssetResponse>> listAssets(@RequestParam String customerId) {
         ListAssetsCommand command = new ListAssetsCommand(customerId);
         List<Asset> assets = listAssetsHandler.handle(command);

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -29,12 +30,14 @@ public class OrderController {
     private final CancelOrderHandler cancelOrderHandler;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN') or #request.customerId == authentication.name")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody CreateOrderRequest request) {
         Order order = createOrderHandler.handle(request.toModel());
         return new ResponseEntity<>(OrderResponse.fromModel(order), HttpStatus.CREATED);
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN') or #customerId == authentication.name")
     public ResponseEntity<List<OrderResponse>> listOrders(
             @RequestParam String customerId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
@@ -51,6 +54,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/{orderId}")
+    @PreAuthorize("hasRole('ADMIN') or #customerId == authentication.name")
     public ResponseEntity<Void> cancelOrder(@PathVariable String orderId, @RequestParam String customerId) {
         CancelOrderRequest request = new CancelOrderRequest(orderId, customerId);
 
